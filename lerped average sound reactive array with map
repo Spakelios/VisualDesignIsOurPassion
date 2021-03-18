@@ -1,0 +1,96 @@
+mport ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
+bubble[] bubbles = new bubble[10];
+
+float smoothedAverage = 0;
+float x;
+float rotation;
+
+Minim minim;
+AudioPlayer player;
+AudioBuffer buffer;
+
+void setup ()
+{
+  background(0);
+  size(1024, 512);
+  colorMode(HSB);
+  void setup ()
+
+  for (int i = 0; i < bubbles.length; i++) {
+    bubbles[i] = new bubble (10);
+  }
+
+  minim  = new Minim(this);
+  player = minim.loadFile("dododo.mp3", width); 
+  player.play ();
+  buffer = player.mix;
+}
+
+void draw()
+{
+  background(0);
+  for ( int i = 0; i < bubbles.length; i++ ) {
+
+    bubbles[i].ascend();
+    bubbles[i].display();
+    bubbles[i].top()
+    
+    }
+  }
+  
+  class bubble 
+{ 
+  float bubbleX ;
+  float bubbleY ;
+  float bubbleSize;
+  float bubbleSpeed;
+
+  bubble (float tempD)
+  {
+    bubbleX = random(width);
+    bubbleY =height;
+    bubbleSize = tempD;
+    bubbleSpeed = random(0.5, 2);
+  }
+  void ascend() 
+  {
+    bubbleY = bubbleY - bubbleSpeed;
+    bubbleX = bubbleX + random(-2, 2);
+  }
+
+  void display()
+  { 
+    for (int i = 0; i < buffer.size(); i ++) 
+    {
+      float sum = 0;
+      sum += abs(buffer.get(i));
+      float c = map(i, 0, buffer.size(), 0, 255); 
+      stroke(c, 255, 255);
+      fill(c, 255, 255);
+      float sample = buffer.get(i) * (height / 2);
+     float average = 0.08 + sum / buffer.size();
+      smoothedAverage = lerp(smoothedAverage, average, 0.5);
+      ellipse(bubbleX * sample, bubbleY, smoothedAverage * 500, smoothedAverage * 500);
+      //sphere(smoothedAverage * 500 + sample);
+      bubbleX += 50 * smoothedAverage;
+       println(smoothedAverage);
+
+        if (bubbleX / 2 >= 1024 )
+      {
+        bubbleX=0;
+      }
+    }
+  }
+  void top ()
+  {
+    if (bubbleY < -bubbleSize/2) { 
+      bubbleY = height+bubbleSize/2;
+    }
+  }
+}
