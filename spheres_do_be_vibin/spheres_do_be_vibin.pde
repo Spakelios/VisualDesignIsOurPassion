@@ -15,7 +15,7 @@ void setup ()
   colorMode(HSB);
 
   minim  = new Minim(this);
-  player = minim.loadFile("Namine.mp3", width); 
+  player = minim.loadFile("cocaine jesuse", width); 
   player.play ();
   buffer = player.mix;
 }
